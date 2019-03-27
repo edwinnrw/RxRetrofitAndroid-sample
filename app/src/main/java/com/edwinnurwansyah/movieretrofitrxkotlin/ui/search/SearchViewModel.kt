@@ -19,8 +19,6 @@ import io.reactivex.schedulers.Schedulers
 import java.io.IOException
 import java.util.HashMap
 import java.util.concurrent.TimeUnit
-import javax.xml.datatype.DatatypeConstants.SECONDS
-
 
 
 class SearchViewModel: ViewModel() {
@@ -28,8 +26,8 @@ class SearchViewModel: ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
     private var progressLiveStatus: MutableLiveData<BaseResponse> = MutableLiveData()
-    private var wrapperMovieData: MutableLiveData<WrapperMovie2> = MutableLiveData()
-    var movieData: MutableLiveData<Movie2> = MutableLiveData()
+    private var wrapperMovieData: MutableLiveData<WrapperMovieSearch> = MutableLiveData()
+    var movieData: MutableLiveData<MovieSearch> = MutableLiveData()
 
     fun fetchSearch(querys:String) {
         if (!querys.isEmpty()){
@@ -42,15 +40,15 @@ class SearchViewModel: ViewModel() {
                     }
                     .map {
                         var gson = Gson()
-                        gson.fromJson(it, WrapperMovie2::class.java)
+                        gson.fromJson(it, WrapperMovieSearch::class.java)
                     }
-                    .subscribeWith(object : DisposableObserver<WrapperMovie2>(){
+                    .subscribeWith(object : DisposableObserver<WrapperMovieSearch>(){
                         override fun onComplete() {
                             progressLiveStatus.postValue(BaseResponse.success())
 
                         }
 
-                        override fun onNext(t: WrapperMovie2) {
+                        override fun onNext(t: WrapperMovieSearch) {
                             wrapperMovieData.postValue(t)
 
                         }
@@ -67,19 +65,19 @@ class SearchViewModel: ViewModel() {
                     .observeOn(AndroidSchedulers.mainThread())
                     .flatMap {
                         var gson = Gson()
-                        var wrapperMovie=gson.fromJson(it,WrapperMovie2::class.java)
+                        var wrapperMovie=gson.fromJson(it,WrapperMovieSearch::class.java)
                         return@flatMap Observable.fromIterable(wrapperMovie.results)
                     }
                     .flatMap {
                         return@flatMap getDetailMovie(it)
                     }
 
-                    .subscribeWith(object : DisposableObserver<Movie2>(){
+                    .subscribeWith(object : DisposableObserver<MovieSearch>(){
                         override fun onComplete() {
 
                         }
 
-                        override fun onNext(t: Movie2) {
+                        override fun onNext(t: MovieSearch) {
                             Log.d("TESGENRE NEXT",t.title)
 
                             movieData.value=t
@@ -110,7 +108,7 @@ class SearchViewModel: ViewModel() {
 
     }
 
-    private fun getDetailMovie(it: Movie2): Observable<Movie2> {
+    private fun getDetailMovie(it: MovieSearch): Observable<MovieSearch> {
 
         return ServiceHelper.createService(Endpoint::class.java).getDetailMovie(it.id)
             .toObservable()
@@ -118,7 +116,7 @@ class SearchViewModel: ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
 
             .map {
-                return@map Movie2(it.id,it.title,it.poster_path,it.original_title,
+                return@map MovieSearch(it.id,it.title,it.poster_path,it.original_title,
                     it.backdrop_path,it.overview,it.release_date,it.vote_average,it.genres,it.runtime)
             }
             .retryWhen {
@@ -146,7 +144,7 @@ class SearchViewModel: ViewModel() {
         return progressLiveStatus
     }
 
-    fun getWrapperMovie(): LiveData<WrapperMovie2>{
+    fun getWrapperMovie(): LiveData<WrapperMovieSearch>{
         return wrapperMovieData
     }
 

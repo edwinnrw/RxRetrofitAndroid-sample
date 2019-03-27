@@ -9,10 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.edwinnurwansyah.movieretrofitrxkotlin.R
-import com.edwinnurwansyah.movieretrofitrxkotlin.model.Movie
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.edwinnurwansyah.movieretrofitrxkotlin.model.Movie2
+import com.edwinnurwansyah.movieretrofitrxkotlin.model.MovieSearch
 import com.edwinnurwansyah.movieretrofitrxkotlin.util.UIUtils
 import com.github.ybq.android.spinkit.SpinKitView
 
@@ -26,7 +25,7 @@ class SearchViewHolder(val parent: ViewGroup) : RecyclerView.ViewHolder(
     private val itemRating= itemView.findViewById<TextView>(R.id.rating)
     private val loader = itemView.findViewById<SpinKitView>(R.id.loader)
     var widht=0
-    fun bindTo(context: Context,movie: Movie2){
+    fun bindTo(context: Context,movie: MovieSearch){
         if (widht == 0)
             widht =  (parent.measuredWidth* .3).toInt()
         itemView.minimumWidth=widht

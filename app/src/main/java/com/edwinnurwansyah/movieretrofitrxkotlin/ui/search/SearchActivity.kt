@@ -11,18 +11,17 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.edwinnurwansyah.movieretrofitrxkotlin.R
-import com.edwinnurwansyah.movieretrofitrxkotlin.model.Movie2
+import com.edwinnurwansyah.movieretrofitrxkotlin.model.MovieSearch
 import com.edwinnurwansyah.movieretrofitrxkotlin.model.Status
 import com.edwinnurwansyah.movieretrofitrxkotlin.ui.search.adapter.SearchAdapter
 import kotlinx.android.synthetic.main.activity_search.*
-import kotlinx.android.synthetic.main.toolbar.*
 
 class SearchActivity : AppCompatActivity(), TextWatcher {
 
 
     lateinit var viewModel:SearchViewModel
     lateinit var adapterSearch:SearchAdapter
-    lateinit var movieList:MutableList<Movie2>
+    lateinit var movieList:MutableList<MovieSearch>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
