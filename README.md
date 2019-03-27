@@ -1,4 +1,5 @@
-##RxRetrofitAndroid-sample
+#RxRetrofitAndroid-sample
+
 #
 This is sample project use retrofit,rxjava with flatmap operator (for two request in one flow) and PagingLibrary
 
